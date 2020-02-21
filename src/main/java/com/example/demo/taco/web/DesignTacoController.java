@@ -5,6 +5,7 @@ import com.example.demo.taco.model.Ingredient;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.example.demo.taco.model.Taco;
+
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/design")
@@ -45,7 +48,14 @@ public class DesignTacoController {
     }
 
     @PostMapping
-    public String processDesign(Design design){
+    public String processDesign(@Valid Taco design, Errors errors, Model model){
+
+        if(errors.hasErrors()){
+
+            log.info("Processing design: " + errors.getAllErrors().toString());
+            model.addAllAttributes(errors.getAllErrors());
+            return  showDesignForm(model);
+        }
 
         log.info("Processing design: " + design);
         return "redirect:/orders/current";
