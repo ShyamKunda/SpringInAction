@@ -6,22 +6,24 @@ import org.hibernate.validator.constraints.CreditCardNumber;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class Order {
 
     private Long id;
     @NotBlank(message = "Name is required")
-    private String name;
+    private String deliveryName;
     @NotBlank(message = "street is required")
-    private String street;
+    private String deliveryStreet;
     @NotBlank(message = "city is required")
-    private String city;
+    private String deliveryCity;
     @NotBlank(message = "state is required")
-    private String state;
+    private String deliveryState;
     @NotBlank(message = "zip is required")
-    private String zip;
+    private String deliveryZip;
     @CreditCardNumber(message = "Not a valid credit card number")
     private String ccNumber;
     @Pattern(regexp="^(0[1-9]|1[0-2])([\\/])([1-9][0-9])$", message="Must be formatted MM/YY")
@@ -29,5 +31,11 @@ public class Order {
     @Digits(integer=3, fraction=0, message="Invalid CVV")
     private String ccCVV;
     private Date placedAt;
+
+    private List<Taco> tacos = new ArrayList<>();
+
+    public void addDesign(Taco design) {
+        this.tacos.add(design);
+    }
 
 }
